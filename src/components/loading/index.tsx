@@ -1,4 +1,3 @@
-import { isLoading } from "expo-font";
 import React from "react";
 import { ActivityIndicator, ActivityIndicatorProps, View } from "react-native";
 
@@ -12,7 +11,7 @@ export function Loading ({isLoading, ...rest}: Props) {
 } else {
     return (
             <View className="flex flex-1 justify-center items-center">
-                <ActivityIndicator size="large" color="#F01212" />
+                <ActivityIndicator size="large" color="#F01212" {...rest} />
             </View>
         );
 }
