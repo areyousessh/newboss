@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useContext, useEffect, useState} from "react";
-import { SafeAreaView, View, TouchableOpacity, FlatList, Image, Text, Dimensions, Linking} from "react-native";
+import { SafeAreaView, View, TouchableOpacity, FlatList, Image, Text, Dimensions, Linking, ScrollView} from "react-native";
 import { propsStack } from "../../routes/stack/models";
 import { Entypo, AntDesign, EvilIcons } from '@expo/vector-icons';
 import { Button } from "../../components/button";
@@ -15,6 +15,7 @@ import Toast from "react-native-toast-message";
 import axios from "axios";
 import jwtDecode from 'jwt-decode'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { DayPicker } from "../../components/dayPicker";
 
 
 type FormDataProps = {
@@ -31,13 +32,21 @@ type UserDataProps = {
     isAdmin: boolean
 }
 
+type availableSchedules = {
+    dayOfMonth: number;
+    dayOfWeek: string;
+    hours: string[]
+}
+
 export function Home() {
     const navigation = useNavigation<propsStack>()
     const [modalProfileVisible, setModalProfileVisible] = useState(false);
     const [modalScheduleVisible, setModalScheduleVisible] = useState(false);
     const [image, setImage] = useState(null || undefined)
     const [userData, setUserData] = useState<UserDataProps>()
+    const [dates, setDates] = useState<availableSchedules[] | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedDays, setSelectedDays] = useState({})
     const [barberName, setBarberName] = useState('')
     const [schedules, setSchedules] = useState<CardProps[]>([])
     const [filteredSchedule, setFilteredSchedule] = useState<CardProps[]>([])
@@ -50,6 +59,54 @@ export function Home() {
     const id_user = decodedToken.userId
     const InstaURL =  'https://www.instagram.com/newbossbarbershop_'
 
+
+    function generateDates(): availableSchedules[] {
+        const startDate = new Date();
+        const dates: availableSchedules[] = [];
+      
+        for (let i = 0; i < 14; i++) {
+          const currentDate = new Date(startDate);
+          currentDate.setDate(startDate.getDate() + i);
+      
+          const dayOfMonth = currentDate.getDate();
+          const dayOfWeek = getDayOfWeek(currentDate);
+      
+          const hours = generateHours();
+      
+          dates.push({ dayOfMonth, dayOfWeek, hours });
+        }
+      
+        return dates;
+      }
+      
+    function getDayOfWeek(date: Date): string {
+        const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Quar', 'Qui', 'Sex', 'Sáb'];
+        return daysOfWeek[date.getDay()];
+      }
+      
+    function generateHours(): string[] {
+        const hours: string[] = [];
+        const startTime = 9 * 60; // 09:00 em minutos
+        const endTime = 20 * 60; // 20:00 em minutos
+        const interval = 40; // 40 minutos
+      
+        for (let i = startTime; i < endTime; i += interval) {
+          const hour = Math.floor(i / 60);
+          const minute = i % 60;
+          const formattedHour = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+          hours.push(formattedHour);
+        }
+      
+        return hours;
+      }
+
+    function handleDaySelect(dayOfMonth, dayOfWeek, isSelected) {
+        const updatedSelectedDays = {
+         available: {dayOfMonth, dayOfWeek, isSelected},
+        };
+        setSelectedDays(updatedSelectedDays);
+        console.log(updatedSelectedDays)
+     }
 
     function toggleModalProfile() {
         setModalProfileVisible(!modalProfileVisible)
@@ -152,6 +209,15 @@ export function Home() {
         setFilteredSchedule(filtered)
     }, [userData, schedules])
 
+    useEffect(() => {
+        async function fetchData() {
+          const generatedDates = generateDates();
+          setDates(generatedDates);
+        }
+    
+        fetchData();
+        console.log(dates)
+      }, []);
 
     useEffect(() => {
         getSchedules()
@@ -217,6 +283,17 @@ export function Home() {
                 />
                 { barberName !== '' ?
                 <>
+                {dates.length != 0 ? (
+                    <View className="h-32 w-10/12 mt-10 items-center">
+                        <ScrollView horizontal>
+                            {dates.map((date, index) => (
+                            <DayPicker key={index} dayOfMonth={date.dayOfMonth} dayOfWeek={date.dayOfWeek} onSelect={handleDaySelect}/>
+                            ))}
+                        </ScrollView>
+                    </View>
+                ) : (
+                    <Loading isLoading={true}/>
+                )}
                 </> 
                 : null }
                 </>
