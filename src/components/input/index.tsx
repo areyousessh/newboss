@@ -1,5 +1,5 @@
 import React from "react";
-import {TextInput, TextInputProps, View } from "react-native";
+import {TextInput, TextInputProps} from "react-native";
 
 type Props = TextInputProps & {
     placeholder: string

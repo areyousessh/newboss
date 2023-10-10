@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { TouchableOpacity, View, Text } from "react-native";
-import { AppContext } from "../../context/globalContext";
+import { AppContext } from "@context/globalContext";
 
 
 type Props = {

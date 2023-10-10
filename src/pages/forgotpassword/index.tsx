@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { View, Text, SafeAreaView, TouchableOpacity, Image } from "react-native";
-import { Button } from "../../components/button";
+import { Button } from "@components/button";
 import { useNavigation } from "@react-navigation/native";
-import { propsStack } from "../../routes/stack/models";
+import { propsStack } from "@routes/stack/models";
 import {Entypo} from '@expo/vector-icons'
-import { Input } from "../../components/input";
+import { Input } from "@components/input";
 
 
 export function ForgotPassword() {
-    const [visible, setVisible] = useState<boolean>(true)
     const navigation = useNavigation<propsStack>()
 
 

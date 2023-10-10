@@ -4,7 +4,7 @@ import * as SplashScreen from 'expo-splash-screen'
 import { Router } from './routes'
 import { useFonts, Poppins_400Regular, Poppins_600SemiBold, Poppins_700Bold } from '@expo-google-fonts/poppins'
 import Toast from 'react-native-toast-message'
-import { AppContextProvider } from './context/globalContext'
+import { AppContextProvider } from '@context/globalContext'
 
 export default function App() {
   let [fontsLoaded] = useFonts({

@@ -1,9 +1,9 @@
 import React from "react"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { Login } from "../../pages/login"
-import { SignUp } from "../../pages/signup"
-import { ForgotPassword } from "../../pages/forgotpassword"
-import { Home } from "../../pages/home"
+import { Login } from "@pages/login"
+import { SignUp } from "@pages/signup"
+import { ForgotPassword } from "@pages/forgotpassword"
+import { Home } from "@pages/home"
 
 const Stack = createNativeStackNavigator()
 

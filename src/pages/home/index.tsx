@@ -1,21 +1,21 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useContext, useEffect, useState} from "react";
 import { SafeAreaView, View, TouchableOpacity, FlatList, Image, Text, Dimensions, Linking, ScrollView} from "react-native";
-import { propsStack } from "../../routes/stack/models";
+import { propsStack } from "@routes/stack/models";
 import { Entypo, AntDesign, EvilIcons } from '@expo/vector-icons';
-import { Button } from "../../components/button";
-import { CustomModal } from "../../components/modal";
+import { Button } from "@components/button";
+import { CustomModal } from "@components/modal";
 import {useForm, Controller} from 'react-hook-form'
-import { AppContext } from "../../context/globalContext";
-import { Card, CardProps } from "../../components/card";
-import { Loading } from "../../components/loading";
-import SelectDropdown from "react-native-select-dropdown";
+import { AppContext } from "@context/globalContext";
+import { Card, CardProps } from "@components/card";
+import { Loading } from "@components/loading";
 import * as ImagePicker from "expo-image-picker"
 import Toast from "react-native-toast-message";
 import axios from "axios";
 import jwtDecode from 'jwt-decode'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { DayPicker } from "../../components/dayPicker";
+import { DayPicker } from "@components/dayPicker";
+import { SelectDropdown } from "@components/selectDropdrown";
 
 
 type FormDataProps = {
@@ -272,16 +272,15 @@ export function Home() {
                 </View>
                 {userData?.isAdmin === true ?
                 <>
-                 <SelectDropdown 
-                    buttonStyle={{width: 355, marginTop: 30, borderWidth: 2, borderColor:'#F51C12', borderRadius: 24, backgroundColor: "transparent"}} 
-                    dropdownStyle={{backgroundColor: '#1E1E1E'}}
-                    rowTextStyle={{color: '#FFF'}}
-                    buttonTextStyle={{color: '#FFF', fontWeight: 'bold', fontSize: 16}}
-                    defaultButtonText="Selecione seu barbeiro" 
-                    data={barber} 
-                    onSelect={setBarberName}
-                />
-                { barberName !== '' ?
+                 <Controller name="barberName" control={control} defaultValue="" render={({field: {onChange}}) => (
+                    <SelectDropdown options={barber} placeholder="Selecione o seu barbeiro" onChange={(selectedValue) => {
+                        onChange(selectedValue);
+                        setBarberName(selectedValue)
+                    }}
+                    selectedValue={barberName}
+                    />
+                 )}/>
+                 { barberName !== '' ?
                 <>
                 {dates.length != 0 ? (
                     <View className="h-32 w-10/12 mt-10 items-center">
@@ -297,7 +296,7 @@ export function Home() {
                 </> 
                 : null }
                 </>
-                : null}
+                : null} 
                     <Loading isLoading={isLoading}/>
             </View>
         </CustomModal>
@@ -309,15 +308,12 @@ export function Home() {
 
            <View className="items-center -mt-3">
            <Controller control={control} name="barberName" render={({field: {onChange}}) => (
-                <SelectDropdown 
-                    buttonStyle={{width: 355, marginTop: 30, borderWidth: 2, borderColor:'#F51C12', borderRadius: 24, backgroundColor: "transparent"}} 
-                    dropdownStyle={{backgroundColor: '#1E1E1E'}}
-                    rowTextStyle={{color: '#FFF'}}
-                    buttonTextStyle={{color: '#FFF', fontWeight: 'bold', fontSize: 16}}
-                    defaultButtonText="Selecione seu barbeiro" 
-                    data={barber} 
-                    onSelect={onChange}
-                      />
+                     <SelectDropdown options={barber} placeholder="Selecione o seu barbeiro" onChange={(selectedValue) => {
+                        onChange(selectedValue);
+                        setBarberName(selectedValue)
+                    }}
+                    selectedValue={barberName}
+                    />
             )}/>
             </View>
             <View className="items-center ios:mt-8 android:mt-6">

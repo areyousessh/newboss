@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { SafeAreaView, Text, TouchableOpacity, View, Image} from "react-native";
 import { Entypo } from '@expo/vector-icons';
-import { propsStack } from '../../routes/stack/models';
+import { propsStack } from '@routes/stack/models';
 import { useNavigation } from '@react-navigation/native';
-import { Input } from '../../components/input';
-import { Button } from '../../components/button';
+import { Input } from '@components/input';
+import { Button } from '@components/button';
 import { CheckBox } from 'react-native-elements';
 import {useForm, Controller} from 'react-hook-form'
 import axios from 'axios'

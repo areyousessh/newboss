@@ -1,14 +1,14 @@
 import React, { useContext, useState } from "react";
 import { SafeAreaView, Text, TouchableOpacity, View, Image } from "react-native";
 import { Entypo } from '@expo/vector-icons'
-import { Button } from "../../components/button";
-import { Input } from "../../components/input";
+import { Button } from "@components/button";
+import { Input } from "@components/input";
 import { useNavigation } from "@react-navigation/native";
-import { propsStack } from "../../routes/stack/models";
+import { propsStack } from "@routes/stack/models";
 import { useForm, Controller } from 'react-hook-form'
 import axios from "axios";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
-import { AppContext } from "../../context/globalContext";
+import { AppContext } from "@context/globalContext";
 
 
 type FormDataProps = {
