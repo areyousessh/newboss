@@ -100,9 +100,9 @@ export function Home() {
         return hours;
       }
 
-    function handleDaySelect(dayOfMonth, dayOfWeek, isSelected) {
+    function handleDaySelect(dayOfMonth, dayOfWeek, isSelected, hours) {
         const updatedSelectedDays = {
-         available: {dayOfMonth, dayOfWeek, isSelected},
+         dayOfMonth, dayOfWeek, isSelected, hours
         };
         setSelectedDays(updatedSelectedDays);
         console.log(updatedSelectedDays)
@@ -270,34 +270,17 @@ export function Home() {
                         {userData?.email}
                     </Text>
                 </View>
-                {userData?.isAdmin === true ?
-                <>
-                 <Controller name="barberName" control={control} defaultValue="" render={({field: {onChange}}) => (
-                    <SelectDropdown options={barber} placeholder="Selecione o seu barbeiro" onChange={(selectedValue) => {
-                        onChange(selectedValue);
-                        setBarberName(selectedValue)
-                    }}
-                    selectedValue={barberName}
-                    />
-                 )}/>
-                 { barberName !== '' ?
-                <>
-                {dates.length != 0 ? (
-                    <View className="h-32 w-10/12 mt-10 items-center">
+                {userData?.isAdmin === true ? (
+                    <>
+                        <View className="h-32 w-10/12 mt-10 items-center">
                         <ScrollView horizontal>
                             {dates.map((date, index) => (
-                            <DayPicker key={index} dayOfMonth={date.dayOfMonth} dayOfWeek={date.dayOfWeek} onSelect={handleDaySelect}/>
+                            <DayPicker key={index} dayOfMonth={date.dayOfMonth} dayOfWeek={date.dayOfWeek} hours={date.hours} onSelect={handleDaySelect}/>
                             ))}
-                        </ScrollView>
-                    </View>
-                ) : (
-                    <Loading isLoading={true}/>
-                )}
-                </> 
-                : null }
-                </>
-                : null} 
-                    <Loading isLoading={isLoading}/>
+                            </ScrollView>
+                        </View>
+                    </>
+                ) : null}
             </View>
         </CustomModal>
         <CustomModal isVisible={modalScheduleVisible} onClose={() => toggleModalSchedule()}>
@@ -312,7 +295,7 @@ export function Home() {
                         onChange(selectedValue);
                         setBarberName(selectedValue)
                     }}
-                    selectedValue={barberName}
+                    value={barberName}
                     />
             )}/>
             </View>
